@@ -1,5 +1,3 @@
-
-
 name: Java Maven Build & Publish Artifact
 
 on:
@@ -8,55 +6,55 @@ on:
   pull_request:
     branches: [ "main" ]
 
-	jobs:
-	  build:
-	    runs-on: ubuntu-latest
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-	    steps:
-	      # Step 1: Checkout code from repository
-	      - name: Checkout code
-	        uses: actions/checkout@v3
+    steps:
+      # Step 1: Checkout code from repository
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-	      # Step 2: Set up JDK (Java Development Kit)
-	      - name: Set up JDK
-	        uses: actions/setup-java@v3
-	        with:
-	          distribution: 'temurin'
-	          java-version: '11'
+      # Step 2: Set up JDK (Java Development Kit)
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
 
-	      # Step 3: Cache Maven dependencies to speed up build times
-	      - name: Cache Maven packages
-	        uses: actions/cache@v3
-	        with:
-	          path: ~/.m2/repository
-	          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-	          restore-keys: |
-	            ${{ runner.os }}-maven-
+      # Step 3: Cache Maven dependencies to speed up build times
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
-	      # Step 4: Run the Maven 'validate' phase
-	      - name: Validate project
-	        run: mvn validate
+      # Step 4: Run the Maven 'validate' phase
+      - name: Validate project
+        run: mvn validate
 
-	      # Step 5: Compile the code
-	      - name: Compile the project
-	        run: mvn compile
+      # Step 5: Compile the code
+      - name: Compile the project
+        run: mvn compile
 
-	      # Step 6: Run tests
-	      - name: Run tests
-	        run: mvn test
+      # Step 6: Run tests
+      - name: Run tests
+        run: mvn test
 
-	      # Step 7: Package the project (creates JAR/WAR)
-	      - name: Package the project
-	        run: mvn package
+      # Step 7: Package the project (creates JAR/WAR)
+      - name: Package the project
+        run: mvn package
 
-	      # Step 8: Deploy the artifacts to a repository (Optional)
-	      # You can use this step to deploy to an artifact repository like Nexus, Artifactory, etc.
-	      # - name: Deploy to Artifactory
-	      #   run: mvn deploy
+      # Step 8: Deploy the artifacts to a repository (Optional)
+      # You can use this step to deploy to an artifact repository like Nexus, Artifactory, etc.
+      # - name: Deploy to Artifactory
+      #   run: mvn deploy
 
-	      # Optional Step: Upload JAR file as an artifact
-	      - name: Upload JAR artifact
-	        uses: actions/upload-artifact@v3
-	        with:
-	          name: my-app-jar
-	          path: target/*.jar
+      # Optional Step: Upload JAR file as an artifact
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: my-app-jar
+          path: target/*.jar
